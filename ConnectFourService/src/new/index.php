@@ -1,6 +1,6 @@
 <?php
 //File: new/index.php
-require_once '../common/constants.php';
+/*require_once '../common/constants.php';
 require_once '../common/utils.php';
 require_once '../play/Game.php';
 
@@ -12,7 +12,7 @@ if (storeState($file, $game->toJsonString())) {
 } 
 else {
     echo createResponse("Failed to store game data");
-}
+}*/
 //class Game {
 //}
 ?>

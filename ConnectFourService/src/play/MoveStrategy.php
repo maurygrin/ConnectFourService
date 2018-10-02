@@ -2,9 +2,9 @@
 abstract class MoveStrategy {
     var $board;
     
-    function __construct(Board $board = null) {
-        $this->board = $board;
-    }
+   // function __construct(Board $board = null) {
+ //       $this->board = $board;
+   // }
     
     abstract function pickSlot();
     
