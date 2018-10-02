@@ -1,18 +1,33 @@
 <?php
-//File: new/index.php
-/*require_once '../common/constants.php';
-require_once '../common/utils.php';
-require_once '../play/Game.php';
 
-$game= new Game($strategy);
+define('STRATEGY', 'strategy'); // constant
+
+$strategy = $_GET[STRATEGY];
+
+$response = false;
+
 $pid = uniqid();
-$file = DATA_DIR . $pid . DATA_EXT;
-if (storeState($file, $game->toJsonString())) {
-    echo json_encode(array("response" => true, PID => $pid));
-} 
+
+
+if ((strcasecmp($strategy, "")==0)){
+    
+    $reason = "strategy not specified";
+    echo json_encode(array("r;esponse" => $response, "reason" => $reason));
+}
+else if (!((strcasecmp($strategy, "smart")==0) || (strcasecmp($strategy, "random")==0))){
+    
+    $reason = "Unknown Strategy";
+    
+    echo json_encode(array("response" => $response, "reason" => $reason));
+    
+}
 else {
-    echo createResponse("Failed to store game data");
-}*/
-//class Game {
-//}
+    
+    $response = true;
+    
+    echo json_encode(array("response" => $response, "pid" => $pid));
+}
+
+
+
 ?>
