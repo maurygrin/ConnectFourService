@@ -4,20 +4,17 @@
 // Requires PHP version 5.3.3 or higher
 
 // set to the base address (URL) of your Connect Four web service
-// $home = "http://cs3360.cs.utep.edu/<ur-account>/";
+//$home = "http://cs3360.cs.utep.edu/<ur-account>/";
 $home = "http://cs3360.cs.utep.edu/mrhidalgo/";
-// $home = "http://localhost:8000/";
+//$home = "http://localhost:8000/";
 
 $strategies = array(); // strategies supported by the web service under test
-$numOfSlots = 7; // number of slots supported by the service under test
+$numOfSlots = 7;  // number of slots supported by the service under test
 
 runTests();
 
-/**
- * Test info: {"width":7,"height":6,"strategies":["Smart","Random"]}.
- */
-function testInfo()
-{
+/** Test info: {"width":7,"height":6,"strategies":["Smart","Random"]}. */
+function testInfo() {
     global $home;
     global $strategies;
     global $numOfSlots;
@@ -33,27 +30,23 @@ function testInfo()
             $height = property($info, 'height');
             assertTrue(isSet($height) && $height >= 6, "$TAG-2");
             $strategies = property($info, 'strategies');
-            assertTrue(isSet($strategies) && is_array($strategies) && sizeof($strategies) >= 2, "$TAG-3");
+            assertTrue(isSet($strategies) && is_array($strategies)
+                && sizeof($strategies) >= 2, "$TAG-3");
             return;
         }
     }
     fail("$TAG-4");
 }
 
-function property($obj, $property)
-{
+function property($obj, $property) {
     if (is_object($obj) && property_exists($obj, $property)) {
         return $obj->{$property};
     }
     return null;
 }
 
-/**
- * Test: all strategies.
- * Must be called after testInfo().
- */
-function testNew1()
-{
+/** Test: all strategies. Must be called after testInfo(). */
+function testNew1() {
     $TAG = "N1";
     global $strategies;
     assertTrue(sizeof($strategies) > 0, "$TAG-1");
@@ -63,100 +56,70 @@ function testNew1()
     }
 }
 
-/**
- * Test: strategy not specified.
- */
-function testNew2()
-{
+/** Test: strategy not specified. */
+function testNew2() {
     $response = visitNew();
     checkNewResponse($response, false, "N2");
 }
 
-/**
- * Test: unknown strategy.
- */
-function testNew3()
-{
+/** Test: unknown strategy. */
+function testNew3() {
     $response = visitNew('Strategy' . uniqid());
     checkNewResponse($response, false, "N3");
 }
 
-/**
- * Test: no pid specified.
- */
-function testPlay1()
-{
+/** Test: no pid specified. */
+function testPlay1() {
     $response = visitPlay();
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, false, "P1");
 }
 
-/**
- * Test: no move specified.
- */
-function testPlay2()
-{
+/** Test: no move specified. */
+function testPlay2() {
     $response = visitPlay(createGame());
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, false, "P2");
 }
 
-/**
- * Test: unknown pid.
- */
-function testPlay3()
-{
+/** Test: unknown pid. */
+function testPlay3() {
     $response = visitPlay('pid-' . uniqid(), "1");
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, false, "P3");
 }
 
-/**
- * Test: invalid slot.
- */
-function testPlay4()
-{
+/** Test: invalid slot. */
+function testPlay4() {
     $response = visitPlay(createGame(), "-1");
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, false, "P4");
 }
 
-/**
- * Test: invalid slot.
- */
-function testPlay5()
-{
+/** Test: invalid slot. */
+function testPlay5() {
     global $numOfSlots;
     $response = visitPlay(createGame(), $numOfSlots);
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, false, "P5");
 }
 
-/**
- * Test: valid slot.
- */
-function testPlay6()
-{
+/** Test: valid slot. */
+function testPlay6() {
     $response = visitPlay(createGame(), "0");
-    // var_dump($response);
+    //var_dump($response);
     checkPlayResponse($response, true, "P6");
 }
 
-/**
- * Test: valid slot
- */
-function testPlay7()
-{
+/** Test: valid slot */
+function testPlay7() {
     global $numOfSlots;
     $response = visitPlay(createGame(), $numOfSlots - 1);
     checkPlayResponse($response, true, "P7");
 }
 
-/**
- * Test: play response
- */
-function testPlay8()
-{
+/** Test: play response */
+function testPlay8() {
     $TAG = "P8";
     $response = visitPlay(createGame(), "3");
     $json = json_decode($response);
@@ -165,18 +128,15 @@ function testPlay8()
     $slot = property($ackMove, 'slot');
     assertTrue(isSet($slot) && $slot == 3, "$TAG-2");
     $isWin = property($ackMove, 'isWin');
-    assertTrue(isSet($isWin) && ! $isWin, "$TAG-3");
+    assertTrue(isSet($isWin) && !$isWin, "$TAG-3");
     $isDraw = property($ackMove, 'isDraw');
-    assertTrue(isSet($isDraw) && ! $isDraw, "$TAG-4");
+    assertTrue(isSet($isDraw) && !$isDraw, "$TAG-4");
     $row = property($ackMove, 'row');
     assertTrue(isSet($row) && is_array($row) && empty($row), "$TAG-5");
 }
 
-/**
- * Test: play response
- */
-function testPlay9()
-{
+/** Test: play response */
+function testPlay9() {
     global $numOfSlots;
     
     $TAG = "P9";
@@ -187,23 +147,20 @@ function testPlay9()
     $slot = property($move, 'slot');
     assertTrue(isSet($slot) && $slot >= 0 && $slot < $numOfSlots, "$TAG-2");
     $isWin = property($move, 'isWin');
-    assertTrue(isSet($isWin) && ! $isWin, "$TAG-3");
+    assertTrue(isSet($isWin) && !$isWin, "$TAG-3");
     $isDraw = property($move, 'isDraw');
-    assertTrue(isSet($isDraw) && ! $isDraw, "$TAG-4");
+    assertTrue(isSet($isDraw) && !$isDraw, "$TAG-4");
     $row = property($move, 'row');
     assertTrue(isSet($row) && is_array($row) && empty($row), "$TAG-5");
 }
 
-/**
- * Test: partial game - place several discs.
- */
-function testPlay10()
-{
+/** Test: partial game - place several discs. */
+function testPlay10() {
     global $numOfSlots;
     
     $TAG = "P10";
     $pid = createGame();
-    for ($i = 0; $i < 3; $i ++) {
+    for ($i = 0; $i < 3; $i++) {
         // pick an arbitray slot
         $slot = rand(0, $numOfSlots - 1);
         $response = visitPlay($pid, $slot);
@@ -211,11 +168,9 @@ function testPlay10()
     }
 }
 
-/**
- * Test: concurrent games.
- */
-function testPlay11()
-{
+
+/** Test: concurrent games. */
+function testPlay11() {
     $TAG = "P11";
     $g1 = createGame();
     play($g1, "1", true, "$TAG-1");
@@ -224,19 +179,18 @@ function testPlay11()
     assertTrue($g1 != $g2, "$TAG-3"); // differed play Ids.
 }
 
-// - helper methods
-function visitNew($strategy = null)
-{
+//- helper methods
+
+function visitNew($strategy = null) {
     global $home;
     $query = '';
-    if (! is_null($strategy)) {
+    if (!is_null($strategy)) {
         $query = '?strategy=' . $strategy;
     }
     return @file_get_contents($home . "/new/index.php" . $query);
 }
 
-function checkNewResponse($response, $expected, $msg)
-{
+function checkNewResponse($response, $expected, $msg) {
     if ($response) {
         $json = json_decode($response);
         if ($json != null) {
@@ -252,8 +206,7 @@ function checkNewResponse($response, $expected, $msg)
     fail($msg);
 }
 
-function createGame()
-{
+function createGame() {
     global $strategies;
     $strategy = "Random";
     if (count($strategies) > 0) {
@@ -264,28 +217,25 @@ function createGame()
     return property($json, 'pid');
 }
 
-function play($pid = null, $move = null, $ok, $tag)
-{
+function play($pid = null, $move = null, $ok, $tag) {
     $response = visitPlay($pid, $move);
     checkPlayResponse($response, $ok, $tag);
 }
 
-function visitPlay($pid = null, $move = null)
-{
+function visitPlay($pid = null, $move = null) {
     global $home;
     $query = '';
-    if (! is_null($pid)) {
+    if (!is_null($pid)) {
         $query = '?pid=' . $pid;
     }
-    if (! is_null($move)) {
+    if (!is_null($move)) {
         $query = $query . (strlen($query) > 0 ? '&' : '?');
         $query = $query . 'move=' . $move;
     }
     return @file_get_contents($home . "/play/index.php" . $query);
 }
 
-function checkPlayResponse($response, $expected, $msg)
-{
+function checkPlayResponse($response, $expected, $msg) {
     if ($response) {
         $json = json_decode($response);
         if ($json != null) {
@@ -301,20 +251,17 @@ function checkPlayResponse($response, $expected, $msg)
     fail($msg);
 }
 
-// ---------------------------------------------------------------------
+//---------------------------------------------------------------------
 // Simple testing framework
-// ---------------------------------------------------------------------
+//---------------------------------------------------------------------
 
-/**
- * Run all user-defined functions named 'test'.
- */
-function runTests()
-{
+/** Run all user-defined functions named 'test'. */
+function runTests() {
     $count = 0;
     $prefix = "test";
-    $functions = get_defined_functions();
-    $names = $functions['user'];
-    foreach ($names as $name) {
+    $functions = get_defined_functions ();
+    $names = $functions ['user'];
+    foreach ($names as $name)  {
         if (substr($name, 0, strlen($prefix)) === $prefix) {
             $count ++;
             echo ".";
@@ -324,32 +271,29 @@ function runTests()
     summary($count, fail('', false));
 }
 
-function assertTrue($expr, $msg)
-{
-    if (! $expr) {
+function assertTrue($expr, $msg) {
+    if (!$expr) {
         fail($msg);
     }
 }
 
-function fail($msg, $report = true)
-{
+function fail($msg, $report = true) {
     static $count = 0;
     static $tested = array();
     
     if ($report) {
         $prefix = explode('-', $msg);
-        $testId = $prefix[0]; // e.g., P1 from P1-1
-        if (! in_array($testId, $tested)) {
+        $testId = $prefix[0];  // e.g., P1 from P1-1
+        if (!in_array($testId, $tested)) {
             $tested[] = $testId;
-            $count ++;
+            $count++;
             echo "F($msg)";
         }
     }
     return $count;
 }
 
-function summary($total, $failed)
-{
+function summary($total, $failed) {
     echo "\n";
     echo "Failed/Total: $failed/$total\n";
 }
