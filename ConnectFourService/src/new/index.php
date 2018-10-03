@@ -12,7 +12,7 @@ $pid = uniqid();
 if ((strcasecmp($strategy, "")==0)){
     
     $reason = "strategy not specified";
-    echo json_encode(array("r;esponse" => $response, "reason" => $reason));
+    echo json_encode(array("response" => $response, "reason" => $reason));
 }
 else if (!((strcasecmp($strategy, "smart")==0) || (strcasecmp($strategy, "random")==0))){
     
