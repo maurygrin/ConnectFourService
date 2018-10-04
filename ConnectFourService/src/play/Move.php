@@ -8,6 +8,14 @@ class Move{
     
     public $posCPU;
 
+    
+    function winningMove(){
+
+    }
+    
+    
+    
+    
     function makePlayerMove($int){
         $this -> pos = $int;
         $this -> isWin = false;

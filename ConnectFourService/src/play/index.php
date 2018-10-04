@@ -1,15 +1,23 @@
 <?php
 include "Move.php";
-// include 'RandomStrategy.php';
+include 'Board.php';
 
 $info = file_get_contents('../writable/playerInfo.json');
 $id = $_GET['pid'];
 $column = $_GET['move'];
+
 $fil = preg_split("/[\":]/", $info);
 $response = false;
+$xrand = rand(0, 6);
+
+//0 is the user
+//1 is the server 
+//insertToken(0, $column);
+//checkWin();
+
 $isWin = false;
 $isDraw = false;
-$xrand = rand(0, 6);
+
 if ((strcasecmp($id, "") == 0)) {
     $reason = "Pid not specified";
     echo json_encode(array(
