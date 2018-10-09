@@ -39,6 +39,8 @@ class Board
         }
     }
 
+    //write to server
+    
     public function writeInfo($pid)
     {
         $get = json_decode(file_get_contents("../writable/$pid.txt"), true);
@@ -52,6 +54,8 @@ class Board
         file_put_contents("../writable/$pid.txt", json_encode($info));
     }
 
+    //get status of board
+    
     public function getBoard($pid)
     {
         $info = json_decode(file_get_contents('../writable/' . $pid . '.json'));
@@ -61,6 +65,8 @@ class Board
         return $b;
     }
 
+    // insert token to array while checking if there are tokens below it 
+    
     public function insertToken($token, $position)
     {
         for ($i = 6; $i >= 0; $i --) {
@@ -79,6 +85,8 @@ class Board
         }
     }
 
+    
+    
     public function checkDraw()
     {
         for ($i = 0; $i < 6; $i ++) {

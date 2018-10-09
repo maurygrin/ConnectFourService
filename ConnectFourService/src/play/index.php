@@ -18,6 +18,9 @@ $strategy = $info["strategy"];
 $response = false;
 $isWin = false;
 $isDraw = false;
+
+//check pid
+
 if ((strcasecmp($pid, "") == 0)) {
     $reason = "Pid not specified";
     $message = array(
@@ -42,7 +45,9 @@ if ((strcasecmp($pid, "") == 0)) {
         "response" => false,
         "reason" => $reason
     );
-} else {
+} 
+//check for strategy
+else {
     if ((strcasecmp($strategy, "random") == 0)) {
         $b = $info["board"];
         $board = new Board($b);
