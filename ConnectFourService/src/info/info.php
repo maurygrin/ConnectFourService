@@ -2,8 +2,11 @@
 
 class info
 {
+
     public $width;
+
     public $height;
+
     public $strategies;
 
     public function __construct($width, $height, $strategies)

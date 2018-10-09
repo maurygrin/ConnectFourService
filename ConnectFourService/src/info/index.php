@@ -7,5 +7,6 @@ $strategies = array(
     "Random"
 );
 
-echo (new info($width, $height, $strategies))->toJson();
+echo (new info($width, $height, $strategies)) -> toJson();
+
 ?>

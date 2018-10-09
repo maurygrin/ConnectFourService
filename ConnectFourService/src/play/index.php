@@ -1,47 +1,48 @@
 <?php
-include "Move.php";
-include 'Board.php';
+require_once ("../play/Board.php");
+require_once ("../play/RandomStrategy.php");
 
-$info = file_get_contents('../writable/playerInfo.json');
-$id = $_GET['pid'];
+$pid = $_GET['pid'];
 $column = $_GET['move'];
-
-$fil = preg_split("/[\":]/", $info);
+$info = json_decode(file_get_contents("../writable/$pid.txt"), true);
+$pid2 = $info["pid"];
+$strategy = $info["strategy"];
 $response = false;
-$xrand = rand(0, 6);
-
-//0 is the user
-//1 is the server 
-//insertToken(0, $column);
-//checkWin();
-
 $isWin = false;
 $isDraw = false;
-
-if ((strcasecmp($id, "") == 0)) {
+if ((strcasecmp($pid, "") == 0)) {
     $reason = "Pid not specified";
-    echo json_encode(array(
-        "response" => $response,
+    $message = array(
+        "response" => false,
         "reason" => $reason
-    ));
+    );
 } else if ((strcasecmp($column, "") == 0)) {
     $reason = "Move not specified";
-    echo json_encode(array(
-        "response" => $response,
+    $message = array(
+        "response" => false,
         "reason" => $reason
-    ));
-} else if ((strcasecmp($id, $fil[1]) != 0)) {
+    );
+} else if (! file_exists("../writable/$pid.txt")) {
     $reason = "Unknown pid";
-    echo json_encode(array(
-        "response" => $response,
+    $message = array(
+        "response" => false,
         "reason" => $reason
-    ));
+    );
+} else if ((int) $column < 0 || (int) $column > 6) {
+    $reason = "Invalid slot, " . $column;
+    $message = array(
+        "response" => false,
+        "reason" => $reason
+    );
 } else {
-    if ((strcasecmp($fil[2], "Random") == 0)) {
-        $response = true;
-        // echo ("{response: true, ack_move: {slot: 3,isWin: false,isDraw: false,row: []},move: {slot: 4,isWin: false,isDraw: false,row: []}}");
-        echo json_encode(array(
-            "response" => $response,
+    if ((strcasecmp($strategy, "random") == 0)) {
+        $b = $info["board"];
+        $board = new Board($b);
+        $xrand = RandomStrategy::getRandomX($board);
+        $board->insertToken("0", $column);
+        $board->insertToken("1", $xrand);
+        $message = array(
+            "response" => true,
             "ack_move" => array(
                 "slot" => $column,
                 "isWin" => $isWin,
@@ -49,13 +50,16 @@ if ((strcasecmp($id, "") == 0)) {
                 "row" => array()
             ),
             "move" => array(
-                "slot" => $xrand,
+                "slot" => "$xrand",
                 "isWin" => $isWin,
                 "isDraw" => $isDraw,
                 "row" => array()
             )
-        ));
+        );
+        $board->writeInfo($pid);
+    } else {
+        $message = $strategy;
     }
 }
+echo json_encode($message);
 ?>
-

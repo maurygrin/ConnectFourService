@@ -1,20 +1,21 @@
 <?php
-abstract class MoveStrategy {
-    var $board;
-    
-   // function __construct(Board $board = null) {
- //       $this->board = $board;
-   // }
-    
-    abstract function pickSlot();
-    
-    function toJason() {
-        return array(‘name’ => get_class($this));
-    }
-    
-    static function fromJson($obj) {
-        $strategy = new self();
-        return $strategy;
+
+include 'SmartStrategy.php';
+include 'RandomStrategy.php';
+
+abstract class MoveStrategy
+{
+
+    public function inf($pid)
+    {
+        $info = json_decode(file_get_contents('../writable/' . $pid . '.json'));
+        
+        if($info["strategy"] == "smart"){
+            new SmartStrategy();
+        }
+        else{
+            new RandomStrategy();
+        }
     }
 }
 ?>
