@@ -19,7 +19,7 @@ $response = false;
 $isWin = false;
 $isDraw = false;
 
-//check pid
+// Check if there is a pid
 
 if ((strcasecmp($pid, "") == 0)) {
     $reason = "Pid not specified";
@@ -27,26 +27,40 @@ if ((strcasecmp($pid, "") == 0)) {
         "response" => false,
         "reason" => $reason
     );
-} else if ((strcasecmp($column, "") == 0)) {
+} 
+
+// Check if there is a move
+
+else if ((strcasecmp($column, "") == 0)) {
     $reason = "Move not specified";
     $message = array(
         "response" => false,
         "reason" => $reason
     );
-} else if (! file_exists("../writable/$pid.txt")) {
+} 
+
+// Check if the pid match with the given pid from the game 
+
+else if (! file_exists("../writable/$pid.txt")) {
     $reason = "Unknown pid";
     $message = array(
         "response" => false,
         "reason" => $reason
     );
-} else if ((int) $column < 0 || (int) $column > 6) {
+} 
+
+// Check if move is valid
+
+else if ((int) $column < 0 || (int) $column > 6) {
     $reason = "Invalid slot, " . $column;
     $message = array(
         "response" => false,
         "reason" => $reason
     );
 } 
-//check for strategy
+
+// Check for strategy
+
 else {
     if ((strcasecmp($strategy, "random") == 0)) {
         $b = $info["board"];

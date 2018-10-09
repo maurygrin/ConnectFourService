@@ -24,6 +24,8 @@ class Board
     
     public $count;
 
+    // Initialize board
+    
     public function __construct($b)
     {
         if (strcasecmp($b, "") == 0) {
@@ -39,7 +41,7 @@ class Board
         }
     }
 
-    //write to server
+    // Write to server
     
     public function writeInfo($pid)
     {
@@ -54,7 +56,7 @@ class Board
         file_put_contents("../writable/$pid.txt", json_encode($info));
     }
 
-    //get status of board
+    // Refresh board
     
     public function getBoard($pid)
     {
@@ -65,7 +67,7 @@ class Board
         return $b;
     }
 
-    // insert token to array while checking if there are tokens below it 
+    // Insert token to array while checking if there are tokens below it 
     
     public function insertToken($token, $position)
     {
@@ -76,6 +78,8 @@ class Board
         }
     }
 
+    // Check if column is full
+    
     public function checkFlag($position)
     {
         if (strcmp($this->board[0][$position], "#") == 0) {
@@ -85,7 +89,7 @@ class Board
         }
     }
 
-    
+    // Check if move is draw
     
     public function checkDraw()
     {
@@ -98,7 +102,9 @@ class Board
         }
         return true;
     }
-
+    
+    // Check if move is win
+    
     public function checkWin()
     {
         return false;

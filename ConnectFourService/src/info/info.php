@@ -16,6 +16,8 @@ class info
 
     public $strategies;
 
+    // Construct a new info
+    
     public function __construct($width, $height, $strategies)
     {
         $this->width = $width;
@@ -23,6 +25,8 @@ class info
         $this->strategies = $strategies;
     }
 
+    // Encode the response to Json
+    
     public function toJson()
     {
         return json_encode($this);

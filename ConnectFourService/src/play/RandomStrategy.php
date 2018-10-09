@@ -11,6 +11,9 @@ require_once ("../play/Board.php");
 
 class RandomStrategy
 {
+    
+    // Returns a random value
+    
     public function getRandomX($board)
     {
         $flag = false;

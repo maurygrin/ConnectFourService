@@ -15,13 +15,19 @@ $strategy = $_GET['strategy'];
 $pid = uniqid();
 $message = array();
 
+// Check if there is a strategy
+
 if ((strcasecmp($strategy, "") == 0)) {
     $reason = "Strategy not specified";
     $message = array(
         "response" => false,
         "reason" => $reason
     );
-} else if (! ((strcasecmp($strategy, "Smart") == 0) || (strcasecmp($strategy, "Random") == 0))) {
+} 
+
+// Check if there is a valid strategy
+
+else if (! ((strcasecmp($strategy, "Smart") == 0) || (strcasecmp($strategy, "Random") == 0))) {
     $reason = "Unknown Strategy";
     $message = array(
         "response" => false,
