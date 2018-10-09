@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * Mauricio Hidalgo
+ * Mark Nunez
+ * Programming Assignmet 1
+ * PHP
+ * CS3360 TR 10:30 - 11:50
+ * 10/08/18
+ */
 class info
 {
 

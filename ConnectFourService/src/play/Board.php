@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * Mauricio Hidalgo
+ * Mark Nunez
+ * Programming Assignmet 1
+ * PHP
+ * CS3360 TR 10:30 - 11:50
+ * 10/08/18
+ */
 class Board
 {
 
@@ -17,18 +24,6 @@ class Board
     
     public $count;
 
-    /*
-     * public function __construct()
-     * {
-     * $this->board = array();
-     * for ($i = 0; $i < 6; $i ++) {
-     * $this->board[$i] = array();
-     * for ($j = 0; $j < 7; $j ++) {
-     * $this->board[$i][$j] = "#";
-     * }
-     * }
-     * }
-     */
     public function __construct($b)
     {
         if (strcasecmp($b, "") == 0) {
@@ -54,7 +49,6 @@ class Board
             "board" => $this->board,
             "win" => ""
         );
-            echo(json_encode($info["board"]));
         file_put_contents("../writable/$pid.txt", json_encode($info));
     }
 
